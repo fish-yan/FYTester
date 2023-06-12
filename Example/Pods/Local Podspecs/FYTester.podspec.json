@@ -1,0 +1,24 @@
+{
+  "name": "FYTester",
+  "version": "0.1.0",
+  "summary": "A short description of FYTester.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/薛焱/FYTester",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "薛焱": "yan.xue@aihuishou.com"
+  },
+  "source": {
+    "git": "https://github.com/薛焱/FYTester.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "10.0"
+  },
+  "swift_versions": "5.0",
+  "source_files": "FYTester/Classes/**/*.{swift,h,m}",
+  "swift_version": "5.0"
+}
