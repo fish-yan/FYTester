@@ -79,7 +79,7 @@ class FYTesterView: UIView {
             let nav = UINavigationController(rootViewController: vc)
             nav.modalPresentationStyle = .fullScreen
             nav.view.backgroundColor = .white
-//            nav.navigationBar.isTranslucent = false
+            nav.navigationBar.isTranslucent = false
             toolWindow.rootViewController?.present(nav, animated: true)
             FYTester.share.tool.nav = nav
         } else {
