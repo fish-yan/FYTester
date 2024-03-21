@@ -65,6 +65,11 @@ class FYSystemInfoController: UIViewController {
         updateUI()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.frame = view.bounds
+    }
+
 }
 
 
