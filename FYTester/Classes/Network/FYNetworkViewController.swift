@@ -24,6 +24,11 @@ class FYNetworkViewController: UIViewController {
         view.addSubview(tableView)
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.frame = view.bounds
+    }
+
     @objc func cleanAction() {
         FYTester.share.network.networks = []
         tableView.reloadData()
