@@ -34,10 +34,9 @@ class FYNetworkResponseViewController: UIViewController {
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        textView.setContentOffset(.init(x: 0, y: -UIApplication.shared.statusBarFrame.height
-                                        - 44), animated: false)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        textView.frame = view.bounds
     }
 
     @objc func copyAction() {
