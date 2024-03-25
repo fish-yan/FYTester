@@ -49,6 +49,10 @@ class FYToolViewController: UIViewController {
         leftBtn.addTarget(self, action: #selector(backAction), for: .touchUpInside)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftBtn)
         view.addSubview(colletionView)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         colletionView.frame = view.bounds
     }
     
