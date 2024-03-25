@@ -42,9 +42,12 @@ class FYToolViewController: UIViewController {
         super.viewDidLoad()
         title = "工具箱"
         view.backgroundColor = .white
-        let left = UIBarButtonItem(title: "关闭", style: .plain, target: self, action: #selector(backAction))
-        left.tintColor = UIColor.darkText
-        navigationItem.leftBarButtonItem = left
+        let leftBtn = UIButton(type: .custom)
+        leftBtn.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
+        leftBtn.setTitle("关闭", for: .normal)
+        leftBtn.setTitleColor(.darkText, for: .normal)
+        leftBtn.addTarget(self, action: #selector(backAction), for: .touchUpInside)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftBtn)
         view.addSubview(colletionView)
         colletionView.frame = view.bounds
     }
