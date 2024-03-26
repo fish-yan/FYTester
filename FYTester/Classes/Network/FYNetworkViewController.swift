@@ -16,6 +16,9 @@ class FYNetworkViewController: UIViewController {
         tableView.register(FYNetworkCell.self, forCellReuseIdentifier: "FYNetworkCell")
         return tableView
     }()
+    
+    var networks = FYTester.share.network.networks
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "网络"
@@ -31,18 +34,19 @@ class FYNetworkViewController: UIViewController {
 
     @objc func cleanAction() {
         FYTester.share.network.networks = []
+        networks = []
         tableView.reloadData()
     }
 }
 
 extension FYNetworkViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return FYTester.share.network.networks.count
+        return networks.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FYNetworkCell", for: indexPath) as! FYNetworkCell
-        let net = FYTester.share.network.networks[indexPath.row]
+        let net = networks[indexPath.row]
         cell.updateUI(net)
         return cell
     }
@@ -54,7 +58,7 @@ extension FYNetworkViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let vc = FYNetworkResponseViewController()
-        let net = FYTester.share.network.networks[indexPath.row]
+        let net = networks[indexPath.row]
         vc.response = net.response
         FYTester.share.tool.nav?.pushViewController(vc, animated: true)
     }
