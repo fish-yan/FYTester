@@ -8,6 +8,17 @@
 import Foundation
 
 class FYTesterView: UIView {
+    private lazy var vcLab: UILabel = {
+        let lab = UILabel()
+        lab.textColor = UIColor.white
+        lab.font = .systemFont(ofSize: 8)
+        lab.isUserInteractionEnabled = true
+        lab.numberOfLines = 2
+        let tap = UITapGestureRecognizer(target: self, action: #selector(copyTapAction))
+        lab.addGestureRecognizer(tap)
+        lab.isHidden = true
+        return lab
+    }()
     private lazy var cpuLab: UILabel = {
         let lab = UILabel()
         lab.font = UIFont.systemFont(ofSize: 10)
@@ -37,11 +48,11 @@ class FYTesterView: UIView {
         return lab
     }()
     private lazy var contentView: UIStackView = {
-        let views: [UIView] = [cpuLab, memoryLab, fpsLab, netLab]
+        let views: [UIView] = [vcLab, cpuLab, memoryLab, fpsLab, netLab]
         let stackView = UIStackView(arrangedSubviews: views)
         stackView.axis = .vertical
         stackView.spacing = 1
-        stackView.distribution = .fillEqually
+        stackView.distribution = .equalSpacing
         return stackView
     }()
     private lazy var toolWindow: UIWindow = {
@@ -89,10 +100,47 @@ class FYTesterView: UIView {
     }
 
     func updateUI(_ cpu: CGFloat, memory: UInt64, fps: Int, net: String) {
+        if #available(iOS 13.0, *) {
+            let windwoSceen: UIWindowScene = UIApplication.shared.connectedScenes.first as! UIWindowScene
+            let keyWindow = windwoSceen.windows.first(where: {$0.isKeyWindow})
+            if let vc = keyWindow?.topViewController() {
+                let vcStr = type(of: vc)
+                vcLab.text = "\(vcStr)"
+                vcLab.isHidden = false
+            } else {
+                vcLab.isHidden = true
+            }
+            
+        } else {
+            // Fallback on earlier versions
+        }
+        
         self.cpuLab.text = "CPU：\(Int(cpu * 100))%"
         self.memoryLab.text = "内存：\(memory.memoryString)"
         self.fpsLab.text = "FPS：\(fps)"
         self.netLab.text = "网络：\(net)"
         backgroundColor = FYTester.share.tool.env.color.withAlphaComponent(0.8)
+    }
+    
+    @objc private func copyTapAction() {
+        UIPasteboard.general.string = self.vcLab.text
+    }
+}
+
+private extension UIWindow {
+    func topViewController() -> UIViewController? {
+        var top = self.rootViewController
+        while true {
+            if let presented = top?.presentedViewController {
+                top = presented
+            } else if let nav = top as? UINavigationController {
+                top = nav.visibleViewController
+            } else if let tab = top as? UITabBarController {
+                top = tab.selectedViewController
+            } else {
+                break
+            }
+        }
+        return top
     }
 }
