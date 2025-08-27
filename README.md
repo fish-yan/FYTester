@@ -1,6 +1,5 @@
 # FYTester
 
-[![CI Status](https://img.shields.io/travis/薛焱/FYTester.svg?style=flat)](https://travis-ci.org/薛焱/FYTester)
 [![Version](https://img.shields.io/cocoapods/v/FYTester.svg?style=flat)](https://cocoapods.org/pods/FYTester)
 [![License](https://img.shields.io/cocoapods/l/FYTester.svg?style=flat)](https://cocoapods.org/pods/FYTester)
 [![Platform](https://img.shields.io/cocoapods/p/FYTester.svg?style=flat)](https://cocoapods.org/pods/FYTester)
@@ -19,10 +18,6 @@ it, simply add the following line to your Podfile:
 ```ruby
 pod 'FYTester'
 ```
-
-## Author
-
-薛焱, yan.xue@aihuishou.com
 
 ## License
 
