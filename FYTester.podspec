@@ -31,7 +31,7 @@ TODO: Add long description of the pod here.
   s.ios.deployment_target = '10.0'
   s.swift_version = '5.0'
 
-  s.source_files = 'FYTester/Classes/**/*.{swift,h,m}'
+  s.source_files = 'Sources/**/*.{swift,h,m}'
   
   # s.resource_bundles = {
   #   'FYTester' => ['FYTester/Assets/*.png']

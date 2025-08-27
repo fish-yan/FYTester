@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class FYTesterView: UIView {
     private lazy var vcLab: UILabel = {
@@ -101,9 +102,9 @@ class FYTesterView: UIView {
 
     func updateUI(_ cpu: CGFloat, memory: UInt64, fps: Int, net: String) {
         if #available(iOS 13.0, *) {
-            let windwoSceen: UIWindowScene = UIApplication.shared.connectedScenes.first as! UIWindowScene
-            let keyWindow = windwoSceen.windows.first(where: {$0.isKeyWindow})
-            if let vc = keyWindow?.topViewController() {
+            if let windwoSceen: UIWindowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let keyWindow = windwoSceen.windows.first(where: {$0.isKeyWindow}),
+               let vc = keyWindow.topViewController() {
                 let vcStr = type(of: vc)
                 vcLab.text = "\(vcStr)"
                 vcLab.isHidden = false

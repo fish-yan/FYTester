@@ -1,6 +1,0 @@
-framework module FYTester {
-  umbrella header "FYTester-umbrella.h"
-
-  export *
-  module * { export * }
-}

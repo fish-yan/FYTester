@@ -6,6 +6,8 @@
 //
 
 import CoreTelephony
+import UIKit
+import FYTesterOC
 
 class FYDeviceInfo: NSObject {
     /// 系统名称
@@ -159,8 +161,8 @@ class FYDeviceInfo: NSObject {
     /// 获取当前网络
     private static func getNetWorkStatus() -> String {
         var network = "UNKNOWN"
-        let reachability = FYReachability.forInternetConnection()
-        let status = reachability.currentReachabilityStatus()
+        let reachability = FYReachability()
+        let status = reachability?.currentReachabilityStatus()
         switch status {
         case .reachableViaWiFi:
             network = "WIFI"

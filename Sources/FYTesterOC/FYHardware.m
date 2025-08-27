@@ -21,6 +21,8 @@
 #include <ifaddrs.h>
 #include <net/if.h>
 #include <arpa/inet.h>
+#import <UIKit/UIKit.h>
+
 @implementation FYHardware
 + (NSString *)hardwareModel
 {
