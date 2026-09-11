@@ -56,12 +56,7 @@ class FYTesterView: UIView {
         stackView.distribution = .equalSpacing
         return stackView
     }()
-    private lazy var toolWindow: UIWindow = {
-        let w = UIWindow(frame: UIScreen.main.bounds)
-        w.windowLevel = .alert + 101
-        w.rootViewController = UIViewController()
-        return w
-    }()
+    private var toolWindow: UIWindow?
     private var edgeInset: CGFloat = 2
 
     override init(frame: CGRect) {
@@ -85,6 +80,26 @@ class FYTesterView: UIView {
     }
 
     @objc func tapAction() {
+        guard let window = window else { return }
+
+        let toolWindow: UIWindow
+        if let existingWindow = self.toolWindow {
+            toolWindow = existingWindow
+        } else {
+            if #available(iOS 13.0, *), let windowScene = window.windowScene {
+                toolWindow = UIWindow(windowScene: windowScene)
+            } else {
+                toolWindow = UIWindow(frame: window.screen.bounds)
+            }
+            toolWindow.windowLevel = .alert + 101
+            toolWindow.rootViewController = UIViewController()
+            self.toolWindow = toolWindow
+        }
+
+        if #available(iOS 13.0, *) {
+            updateToolWindowScene()
+        }
+
         if toolWindow.isHidden {
             toolWindow.isHidden = false
             let vc = FYToolViewController()
@@ -100,10 +115,22 @@ class FYTesterView: UIView {
         }
     }
 
+    @available(iOS 13.0, *)
+    func updateToolWindowScene() {
+        guard let toolWindow = toolWindow, let windowScene = window?.windowScene else { return }
+        if toolWindow.windowScene !== windowScene {
+            toolWindow.rootViewController?.dismiss(animated: false)
+            toolWindow.isHidden = true
+            FYTester.share.tool.nav = nil
+            toolWindow.windowScene = windowScene
+        }
+        toolWindow.frame = windowScene.coordinateSpace.bounds
+    }
+
     func updateUI(_ cpu: CGFloat, memory: UInt64, fps: Int, net: String) {
         if #available(iOS 13.0, *) {
-            if let windwoSceen: UIWindowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let keyWindow = windwoSceen.windows.first(where: {$0.isKeyWindow}),
+            if let windowScene = window?.windowScene,
+               let keyWindow = windowScene.windows.first(where: { $0.isKeyWindow }),
                let vc = keyWindow.topViewController() {
                 let vcStr = type(of: vc)
                 vcLab.text = "\(vcStr)"

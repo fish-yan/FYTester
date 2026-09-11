@@ -21,7 +21,6 @@ class FYTesterWindow: UIWindow {
         windowLevel = .alert + 100
         rootViewController = UIViewController()
         rootViewController?.view.addSubview(testerView)
-        isHidden = false
         let pan = UIPanGestureRecognizer(target: self, action: #selector(panAction(_:)))
         addGestureRecognizer(pan)
     }
@@ -31,8 +30,25 @@ class FYTesterWindow: UIWindow {
     }
 
 
+    @available(iOS 13.0, *)
+    func attach(to windowScene: UIWindowScene) {
+        if self.windowScene !== windowScene {
+            let floatingFrame = frame
+            isHidden = true
+            self.windowScene = windowScene
+            frame = floatingFrame
+        }
+        testerView.updateToolWindowScene()
+    }
+
     @objc func panAction(_ pan: UIPanGestureRecognizer) {
         guard let panView = pan.view else { return }
+        let sceneBounds: CGRect
+        if #available(iOS 13.0, *), let windowScene = windowScene {
+            sceneBounds = windowScene.coordinateSpace.bounds
+        } else {
+            sceneBounds = screen.bounds
+        }
         /// 拖动位移
         let offsetPoint = pan.translation(in: panView)
         /// 清空位移
@@ -40,17 +56,17 @@ class FYTesterWindow: UIWindow {
         /// 重新计算位置
         var newX = panView.center.x + offsetPoint.x
         var newY = panView.center.y + offsetPoint.y
-        if newX < testerSize.width / 2 {
-            newX = testerSize.width / 2
+        if newX < sceneBounds.minX + testerSize.width / 2 {
+            newX = sceneBounds.minX + testerSize.width / 2
         }
-        if newX > UIScreen.main.bounds.width - testerSize.width / 2 {
-            newX = UIScreen.main.bounds.width - testerSize.width / 2
+        if newX > sceneBounds.maxX - testerSize.width / 2 {
+            newX = sceneBounds.maxX - testerSize.width / 2
         }
-        if newY < testerSize.height / 2 {
-            newY = testerSize.height / 2
+        if newY < sceneBounds.minY + testerSize.height / 2 {
+            newY = sceneBounds.minY + testerSize.height / 2
         }
-        if newY > UIScreen.main.bounds.height - testerSize.height / 2 {
-            newY = UIScreen.main.bounds.height - testerSize.height / 2
+        if newY > sceneBounds.maxY - testerSize.height / 2 {
+            newY = sceneBounds.maxY - testerSize.height / 2
         }
         panView.center = CGPoint(x: newX, y: newY)
     }
